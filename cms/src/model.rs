@@ -17,5 +17,14 @@ pub struct Schema {
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Field {
     pub name: String,
-    pub data_type: String,
+    pub data_type: DataType,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+pub enum DataType {
+    String,
+    Number,
+    Boolean,
+    Date,
+    FileUrl,
 }

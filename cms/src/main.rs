@@ -1,15 +1,16 @@
 mod model;
-use model::{User, Schema};
+use model::{Schema, User};
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use bson::{doc, Bson, Document};
 use mongodb::{Client, Collection};
+use actix_web::middleware::Logger;
+use env_logger::Env;
 //use serde::Serialize;
 //use serde_json::Value;
 
 const DB_NAME: &str = "myApp";
 const COLL_NAME: &str = "users";
-
 
 /// Gets the user with the supplied username.
 #[get("/api/get_user/{username}")]
@@ -52,15 +53,11 @@ async fn get_schema(client: web::Data<Client>, name: web::Path<String>) -> HttpR
     let name = name.into_inner();
     let collection: Collection<Document> = client.database("test_db").collection("test_col");
     match collection.find_one(doc! { "name": &name }, None).await {
-        Ok(Some(schema)) => {
-            match serde_json::to_string(&schema) {
-                Ok(json) => HttpResponse::Ok().body(json),
-                Err(_) => HttpResponse::InternalServerError().body("Error converting document to JSON"),
-            }
+        Ok(Some(schema)) => match serde_json::to_string(&schema) {
+            Ok(json) => HttpResponse::Ok().body(json),
+            Err(_) => HttpResponse::InternalServerError().body("Error converting document to JSON"),
         },
-        Ok(None) => {
-            HttpResponse::NotFound().body(format!("No schema found with name {}", name))
-        }
+        Ok(None) => HttpResponse::NotFound().body(format!("No schema found with name {}", name)),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
@@ -81,8 +78,12 @@ async fn main() -> std::io::Result<()> {
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
     let client = Client::with_uri_str(uri).await.expect("failed to connect");
 
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
+
     HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
+            .wrap(Logger::new("%a %{User-Agent}i"))
             .app_data(web::Data::new(client.clone()))
             .service(get_user)
             .service(create_schema)
