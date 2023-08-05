@@ -6,7 +6,7 @@ This is used for my personal portfolio website. It is essentially used, to creat
 
 ### CMS
 
-This is implemented using Rust and MongoDB.
+This is implemented using Go and MongoDB. For authentication, Redis might be used aswell.
 
 #### Dynamic schema
 
@@ -14,17 +14,16 @@ This is implemented using Rust and MongoDB.
 2. add dynamic fields to the schema
 3. save the schema
 
-Dynamic data can be handled by using ``serde_json::Value`` or creating new structs:
-
-```rust
-pub struct Schema {
-    pub name: String,
-    pub fields: Vec<Field>,
+```go
+type Schema struct {
+    Name   string  `json:"name"`
+    Fields []Field `json:"fields"`
 }
 
-pub struct Field {
-    pub name: String,
-    pub data_type: String,
+type Field struct {
+    Name     string      `json:"name"`
+    DataType string      `json:"data_type"`
+    Data     interface{} `json:"data"`
 }
 ```
 
@@ -32,19 +31,12 @@ These can also handle nested data, but the json would look like this:
 
 ```json
 {
-    "name": "blog_post",
+    "name": "test_schema",
     "fields": [
         {
-            "name": "title",
-            "data_type": "string"
-        },
-        {
-            "name": "body",
-            "data_type": "string"
-        },
-        {
-            "name": "date",
-            "data_type": "date"
+            "name": "description",
+            "data_type": "text",
+            "data": "Some description"
         }
     ]
 }
