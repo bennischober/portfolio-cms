@@ -1,0 +1,10 @@
+database:
+  type: MongoDB
+  name: cmsDB
+
+server:
+  port: 8080
+
+logging:
+  level: information
+  port: 8081
