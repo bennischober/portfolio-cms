@@ -1,4 +1,4 @@
-module cms/main
+module backend/main
 
 go 1.20
 

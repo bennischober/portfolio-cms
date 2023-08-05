@@ -7,7 +7,7 @@ import (
 	"database/sql"
 	_ "github.com/lib/pq"
 
-	"cms/main/internal/models"
+	"backend/main/internal/models"
 )
 
 type PostgresStore struct {

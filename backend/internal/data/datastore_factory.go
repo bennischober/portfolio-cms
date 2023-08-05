@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"cms/main/internal/models"
-	"cms/main/internal/data/provider/mongodb"
-	//"cms/main/internal/data/provider/postgres"
+	"backend/main/internal/models"
+	"backend/main/internal/data/provider/mongodb"
+	//"backend/main/internal/data/provider/postgres"
 
-	"cms/main/internal/config"
+	"backend/main/internal/config"
 )
 
 func NewDataStore(ctx context.Context, config *config.Config) (models.DataStore, error) {

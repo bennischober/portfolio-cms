@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"cms/main/internal/config"
-	"cms/main/internal/models"
+	"backend/main/internal/config"
+	"backend/main/internal/models"
 )
 
 func CreateSchema(store models.DataStore, config *config.Config) gin.HandlerFunc {

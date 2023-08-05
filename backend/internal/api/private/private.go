@@ -1,9 +1,9 @@
 package private
 
 import (
-	"cms/main/internal/config"
-	"cms/main/internal/api/private/handlers"
-	"cms/main/internal/models"
+	"backend/main/internal/config"
+	"backend/main/internal/api/private/handlers"
+	"backend/main/internal/models"
 
 	"github.com/gin-gonic/gin"
 )

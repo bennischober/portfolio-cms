@@ -10,9 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"cms/main/internal/api/private"
-	"cms/main/internal/config"
-	"cms/main/internal/data"
+	"backend/main/internal/api/private"
+	"backend/main/internal/config"
+	"backend/main/internal/data"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 		fmt.Printf("Error loading .env file")
 	}
 
-	logger := log.New(os.Stdout, "cms", log.LstdFlags|log.Lshortfile)
+	logger := log.New(os.Stdout, "backend", log.LstdFlags|log.Lshortfile)
 
 	// Load config
 	config, err := config.LoadConfig("config.yml", logger)

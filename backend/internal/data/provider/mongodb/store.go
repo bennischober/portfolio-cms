@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"cms/main/internal/models"
+	"backend/main/internal/models"
 )
 
 type MongoDBStore struct {
