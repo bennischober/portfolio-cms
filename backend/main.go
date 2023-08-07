@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"backend/main/internal/api/private"
+	"backend/main/internal/api"
 	"backend/main/internal/config"
 	"backend/main/internal/data"
 )
@@ -40,9 +40,9 @@ func main() {
 	r := gin.Default()
 	
 
-	// Create private api
-	privateAPI := private.NewPrivateAPI(store, config)
-	privateAPI.SetupRoutes(r)
+	// Create private and public API
+	api := api.NewAPIBuilder(store, config)
+	api.SetupRoutes(r)
 
 	// Run server
 	logger.Fatal(http.ListenAndServe(":" + config.Server.Port, r))
