@@ -21,6 +21,7 @@ type MongoDBStore struct {
 // hardcoded schema collection name
 const (
 	SCHEMA_COLLECTION = "schema"
+	USER_COLLECTION = "users"
 )
 
 func (s *MongoDBStore) EnsureIndexes(ctx context.Context) error {
@@ -36,6 +37,20 @@ func (s *MongoDBStore) EnsureIndexes(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to create index: %w", err)
 	}
+
+	// create unique index on username field
+	collection = s.client.Database(s.dbName).Collection(USER_COLLECTION)
+	indexModel = mongo.IndexModel{
+		Keys: bson.M{
+			"username": 1, // index in ascending order
+		},
+		Options: options.Index().SetUnique(true),
+	}
+	_, err = collection.Indexes().CreateOne(ctx, indexModel)
+	if err != nil {
+		return fmt.Errorf("failed to create index: %w", err)
+	}
+
 	return nil
 }
 
@@ -130,6 +145,31 @@ func validateData(schema models.Schema, data map[string]interface{}) error {
 		}
 	}
 	return nil
+}
+
+// User handling
+func (s *MongoDBStore) CreateUser(ctx context.Context, user *models.User) error {
+	collection := s.client.Database(s.dbName).Collection(USER_COLLECTION)
+
+	if _, err := collection.InsertOne(ctx, user); err != nil {
+		return fmt.Errorf("failed to create user: %w", err)
+	}
+	return nil
+}
+
+func (s *MongoDBStore) GetUser(ctx context.Context, username string) (models.User, error) {
+	collection := s.client.Database(s.dbName).Collection(USER_COLLECTION)
+
+	var user models.User
+	if err := collection.FindOne(context.Background(), bson.M{"username": username}).Decode(&user); err != nil {
+		if err == mongo.ErrNoDocuments {
+			return user, fmt.Errorf("user not found: %w", err)
+		} else {
+			return user, fmt.Errorf("failed to get user: %w", err)
+		}
+	}
+
+	return user, nil
 }
 
 func NewMongoDBStore(ctx context.Context, uri string, dbName string) (*MongoDBStore, error) {

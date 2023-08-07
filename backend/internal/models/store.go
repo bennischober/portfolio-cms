@@ -19,4 +19,8 @@ type DataStore interface {
     CreateRecord(ctx context.Context, collection string, record map[string]interface{}) error
     GetSingleRecord(ctx context.Context, collection string, id string) (map[string]interface{}, error)
     GetRecords(ctx context.Context, collection string) ([]map[string]interface{}, error)
+
+    // user handling
+    CreateUser(ctx context.Context, user *User) error
+    GetUser(ctx context.Context, username string) (User, error)
 }

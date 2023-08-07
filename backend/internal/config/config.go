@@ -21,6 +21,12 @@ type Config struct {
 		Level string `yaml:"level" envconfig:"LOG_LEVEL"`
 		Port string `yaml:"port" envconfig:"LOG_PORT"`
 	} `yaml:"logging"`
+	Authentication struct {
+		TokenExpire int `yaml:"token_expire_minutes" envconfig:"TOKEN_EXPIRE"`
+		RedisAddress string `yaml:"redis_address" envconfig:"REDIS_ADDRESS"`
+		RedisPassword string `yaml:"redis_password" envconfig:"REDIS_PASSWORD"`
+		RedisDB int `yaml:"redis_db" envconfig:"REDIS_DB"`
+	} `yaml:"authentication"`
 }
 
 

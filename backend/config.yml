@@ -8,3 +8,9 @@ server:
 logging:
   level: information
   port: 8081
+
+authentication:
+  token_expire_minutes: 60
+  redis_address: localhost:6379
+  redis_password: ""
+  redis_db: 0
