@@ -1,5 +1,4 @@
-// internal/data/provider/postgres/store.go
-package postgres
+package provider
 
 import (
 	"context"

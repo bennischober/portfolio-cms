@@ -1,5 +1,4 @@
-// internal/data/provider/mongodb/store.go
-package mongodb
+package provider
 
 import (
 	"context"

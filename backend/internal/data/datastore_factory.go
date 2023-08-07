@@ -7,8 +7,7 @@ import (
 	"strings"
 
 	"backend/main/internal/models"
-	"backend/main/internal/data/provider/mongodb"
-	//"backend/main/internal/data/provider/postgres"
+	"backend/main/internal/data/provider"
 
 	"backend/main/internal/config"
 )
@@ -19,7 +18,7 @@ func NewDataStore(ctx context.Context, config *config.Config) (models.DataStore,
 
 	switch storeType {
 	case models.StoreTypeMongoDB:
-		return mongodb.NewMongoDBStore(ctx, connString, config.Database.Name)
+		return provider.NewMongoDBStore(ctx, connString, config.Database.Name)
 	case models.StoreTypePostgres:
 		// throw not implemented error
 		return nil, fmt.Errorf("provider error: Postgres store not implemented yet")
