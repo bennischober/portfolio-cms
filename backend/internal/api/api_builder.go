@@ -14,6 +14,7 @@ type APIBuilder struct {
 	Config     *config.Config
 	Auth       auth.IAuthService
 	Middleware auth.IAuthMiddleware
+	Token auth.ITokenService
 }
 
 // Maps routes to handlers
@@ -37,8 +38,11 @@ func (api *APIBuilder) SetupRoutes(r *gin.Engine) {
 	authentication := public.Group("/auth")
 	authentication.POST("/register", handler.RegisterUser(api.Auth, api.Config))
 	authentication.POST("/login", handler.LoginUser(api.Auth, api.Config))
+	authentication.POST("/logout", handler.LogoutUser(api.Auth, api.Config))
+	authentication.POST("/token/validate", handler.ValidateToken(api.Token, api.Config))
+	authentication.POST("/token/refresh", handler.RefreshToken(api.Token, api.Config))
 }
 
-func NewAPIBuilder(store models.DataStore, config *config.Config, auth auth.IAuthService, middleware auth.IAuthMiddleware) *APIBuilder {
-	return &APIBuilder{Store: store, Config: config, Auth: auth, Middleware: middleware}
+func NewAPIBuilder(store models.DataStore, config *config.Config, auth auth.IAuthService, middleware auth.IAuthMiddleware, token auth.ITokenService) *APIBuilder {
+	return &APIBuilder{Store: store, Config: config, Auth: auth, Middleware: middleware, Token: token}
 }

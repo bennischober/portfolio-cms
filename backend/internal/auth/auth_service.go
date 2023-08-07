@@ -12,7 +12,7 @@ import (
 
 type IAuthService interface {
 	RegisterUser(ctx context.Context, user *models.User) error
-	LoginUser(ctx context.Context, user *models.User) (string, error)
+	AuthenticateUser(ctx context.Context, user *models.User) (string, error)
 }
 
 type AuthService struct {
@@ -44,7 +44,7 @@ func (a *AuthService) RegisterUser(ctx context.Context, user *models.User) error
 	return nil
 }
 
-func (a *AuthService) LoginUser(ctx context.Context, user *models.User) (string, error) {
+func (a *AuthService) AuthenticateUser(ctx context.Context, user *models.User) (string, error) {
 	if authenticated := helper.CheckCredentials(ctx, a.Store, user); !authenticated {
 		return "", fmt.Errorf("invalid credentials")
 	}

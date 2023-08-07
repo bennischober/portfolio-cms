@@ -15,6 +15,7 @@ type Claims struct {
 type ITokenService interface {
 	GenerateToken(username string, expireTime time.Duration) (string, error)
 	ValidateToken(tokenString string) (*Claims, error)
+	RefreshToken(tokenString string, expireTime time.Duration) (string, error)
 }
 
 type TokenService struct {
@@ -54,4 +55,13 @@ func (ts *TokenService) ValidateToken(tokenString string) (*Claims, error) {
 	}
 
 	return claims, err
+}
+
+func (ts *TokenService) RefreshToken(tokenString string, expireTime time.Duration) (string, error) {
+	claims, err := ts.ValidateToken(tokenString)
+	if err != nil {
+		return "", err
+	}
+
+	return ts.GenerateToken(claims.Username, expireTime)
 }
