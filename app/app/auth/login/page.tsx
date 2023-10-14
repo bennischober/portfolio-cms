@@ -15,7 +15,7 @@ export default async function LoginPage() {
 
     const login = async (user: User) => {
         "use server";
-        const response = await fetch("http://localhost:8080/api/auth/login", {
+        const response = await fetch(`${process.env.SERVER_HOST}/api/auth/login`, {
             method: "POST",
             body: JSON.stringify(user),
         });

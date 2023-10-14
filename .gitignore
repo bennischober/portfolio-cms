@@ -1,2 +1,5 @@
 # Ignore local .env files
 **.env.local
+
+# Ignore docker drives
+/data

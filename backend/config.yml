@@ -1,6 +1,7 @@
 database:
   type: MongoDB
   name: cmsDB
+  connect: mongodb://database:27017
 
 server:
   port: 8080
@@ -11,6 +12,6 @@ logging:
 
 authentication:
   token_expire_minutes: 60
-  redis_address: localhost:6379
+  redis_address: redis:6379
   redis_password: ""
   redis_db: 0
